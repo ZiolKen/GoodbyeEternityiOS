@@ -63,11 +63,6 @@ jobs:
           -scheme "${NAME}" \
           -archivePath build/ios/App.xcarchive \
           -configuration Release \
-          CODE_SIGN_STYLE=Manual \
-          CODE_SIGN_IDENTITY="" \
-          PROVISIONING_PROFILE_SPECIFIER="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO \
           | xcpretty
 
     # 5. Package .ipa
