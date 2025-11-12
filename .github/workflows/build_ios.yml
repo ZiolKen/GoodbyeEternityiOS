@@ -1,55 +1,62 @@
-name: Build iOS (IPA from .pck)
+name: Build iOS (unsigned IPA)
 
+# Run on every push to main + on demand (workflow_dispatch)
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 env:
-  GODOT_VERSION: 4.3
-  IOS_PRESET: iOS
-  NAME: GoodbyeEternity
+  # ----- project-specific knobs -----
+  GODOT_VERSION: 4.3-stable # dont forget update export templates if bumping this version
+  IOS_PRESET:    iOS          # export-preset name in Godot
+  NAME:          Goodbye Eternity
+  # speed: stop brew from auto-updating every run
   HOMEBREW_NO_AUTO_UPDATE: 1
 
 jobs:
   build-ios:
-    runs-on: macos-14
+    runs-on: macos-14      # Apple Silicon runner w/ Xcode 16
     timeout-minutes: 30
 
     steps:
+    # 0. Pull repo
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        lfs: true
+        lfs: true 
 
+    # 1. Get headless Godot
     - name: Download Godot headless
       run: |
         curl -L \
-          "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_macos.universal.zip" \
+          "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_macos.universal.zip" \
           -o godot.zip
         unzip -q godot.zip -d godot
-
-    - name: Download and install iOS export templates
+        
+    # 2. Copy iOS export template from repo folder
+    #    TODO: To save some bandwidth, I decided to store export template in the repository. (180 MB vs over 1 GB)
+    #    The ios.zip template must be stored in folder called export_templates/{godot-version}/
+    #    The godot version uses a dash in the name but export template uses a dot.
+    #    E.g.: /export_templates/4.4.1.stable/ios.zip
+    - name: Install iOS export template
       run: |
-        templates_root="$HOME/Library/Application Support/Godot/export_templates/4.3"
+        templates_root="$HOME/Library/Application Support/Godot/export_templates"
         mkdir -p "$templates_root"
-        curl -L "https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz" -o ios_templates.tpz
-        unzip -q ios_templates.tpz -d tmp_templates
-        cp tmp_templates/templates/ios.zip "$templates_root/ios.zip"
+        cp -R "export_templates/." "$templates_root/"
 
-    - name: Export Xcode project
+    # 3. Export preset -> Xcode project
+    #    TODO: In addition to other mandatory fields (try running the export locally first),
+    #    you need to enable `application/export_project_only=true` and `application/delete_old_export_files_unconditionally=true`.
+    #    You can find these options in Advanced Options.
+    - name: Export to Xcode project
       run: |
         mkdir -p build/ios
         godot/Godot.app/Contents/MacOS/Godot --headless --path . \
           --export-release "${IOS_PRESET}" build/ios/${NAME}.xcodeproj
 
-    - name: Download GoodbyeEternity.pck from Dropbox
-      run: |
-        curl -L "https://dl.dropboxusercontent.com/scl/fi/fdt7265yu9djfnstzhftv/GoodbyeEternity.pck?rlkey=qdrt4q2ydc397tvthcx03b9fm&dl=1" -o GoodbyeEternity.pck
-
-    - name: Replace default .pck with your actual one
-      run: |
-        cp GoodbyeEternity.pck build/ios/${NAME}.xcodeproj/GoodbyeEternity.pck
-
-    - name: Build unsigned .ipa
+    # 4. Build unsigned archive (mirrors mak448a/build-ios)
+    - name: xcodebuild archive (unsigned)
       run: |
         xcodebuild archive \
           -project build/ios/${NAME}.xcodeproj \
@@ -63,6 +70,7 @@ jobs:
           CODE_SIGNING_ALLOWED=NO \
           | xcpretty
 
+    # 5. Package .ipa
     - name: Package IPA
       run: |
         cd build/ios
@@ -71,8 +79,14 @@ jobs:
         zip -r "${NAME}.ipa" Payload
         mv "${NAME}.ipa" ../../
 
-    - name: Upload IPA
+    # 6. Publish artifact
+    - name: Upload IPA artifact
       uses: actions/upload-artifact@v4
       with:
-        name: GoodbyeEternity-iOS
-        path: GoodbyeEternity.ipa
+        name: unsigned-ipa
+        path: ${{ env.NAME }}.ipa
+        retention-days: 14
+        
+    # TODO: Now you can download the build from the pipeline and use a sideload store to 
+    #    load it to your iPhone/iPad. You can use AltStore classic, for example.
+    #    You can follow the guide for VCMI - https://vcmi.eu/players/Installation_iOS/
