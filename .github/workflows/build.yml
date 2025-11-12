@@ -10,27 +10,27 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-- name: build archive and ipaify
-  run: |
-    set -xe
+      - name: build archive and ipaify
+        run: |
+          set -xe
 
-    wget -O archive.zip "https://www.dropbox.com/scl/fi/...&dl=1"
-    unzip -o archive.zip -d .
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/...&dl=1"
+          unzip -o archive.zip -d .
 
-    xcodebuild -list -project goodbyeeternity.xcodeproj
+          xcodebuild -list -project goodbyeeternity.xcodeproj
 
-    xcodebuild archive \
-      -project goodbyeeternity.xcodeproj \
-      -scheme goodbyeeternity \
-      -archivePath goodbyeeternity.xcarchive \
-      -configuration Release \
-      CODE_SIGNING_ALLOWED=NO \
-      CODE_SIGNING_REQUIRED=NO
+          xcodebuild archive \
+            -project goodbyeeternity.xcodeproj \
+            -scheme goodbyeeternity \
+            -archivePath goodbyeeternity.xcarchive \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
 
-    mkdir Payload
-    mv goodbyeeternity.xcarchive/Products/Applications/*.app Payload/
-    zip -r goodbyeeternity.ipa Payload
-    mv goodbyeeternity.ipa ${{ runner.temp }}/goodbyeeternity.ipa
+          mkdir Payload
+          mv goodbyeeternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r goodbyeeternity.ipa Payload
+          mv goodbyeeternity.ipa ${{ runner.temp }}/goodbyeeternity.ipa
 
       - name: Upload application
         uses: actions/upload-artifact@v4
