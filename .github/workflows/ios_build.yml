@@ -1,22 +1,23 @@
-name: Build Godot iOS IPA
+name: Build Godot Blank IPA
 
 on:
   workflow_dispatch:
 
 jobs:
-  build_ios:
-    runs-on: macos-latest
+  build:
+    runs-on: macos-14
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download and unzip Godot iOS template
+      - name: Download and unzip iOS template
         run: |
-          wget -O ios_template.zip "https://dl.dropboxusercontent.com/scl/fi/qg4ofedro2xsr0wtyz6sd/ios.zip?rlkey=avw6jlbtcztrenumz9wb2nwd9&dl=1"
-          unzip ios_template.zip -d ios
+          curl -L "https://dl.dropboxusercontent.com/scl/fi/qg4ofedro2xsr0wtyz6sd/ios.zip?rlkey=avw6jlbtcztrenumz9wb2nwd9&dl=1" -o ios.zip
+          unzip ios.zip -d ios
+          touch ios/data.pck  # or use your real game file
 
-      - name: Build .xcarchive (no signing)
+      - name: Build Xcode project (unsigned)
         run: |
           cd ios
           xcodebuild archive \
@@ -27,16 +28,16 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
 
-      - name: Package into IPA
+      - name: Package IPA
         run: |
           cd ios
-          mkdir Payload
-          cp -R godot_ios.xcarchive/Products/Applications/godot_ios.app Payload/
-          zip -r godot_ios.ipa Payload
+          mkdir -p Payload
+          cp -R godot_ios.xcarchive/Products/Applications/*.app Payload/
+          zip -r "godot_blank.ipa" Payload
+          mv "godot_blank.ipa" ${{ runner.temp }}/godot_blank.ipa
 
-      - name: Upload IPA artifact
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: godot_ios
-          path: ios/godot_ios.ipa
-          retention-days: 7
+          name: godot-blank-ipa
+          path: ${{ runner.temp }}/godot_blank.ipa
