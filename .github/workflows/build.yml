@@ -10,46 +10,36 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: build archive and ipaify
-        run: |
-          set -x
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/pme7pzd0ncnppsnvpkukn/b5a35fc9-bfcb-11f0-a5cb-d45d64a76045.zip?rlkey=c7csk0p20h3wvpq5o7fz1isyt&dl=1"
-          unzip archive.zip -d .
-          
-          echo "✅ Check after unzip"
-          ls -la
-          ls -la goodbyeeternity.xcodeproj || true
-          
-          if [ -d goodbyeeternity.xcodeproj ]; then
-            echo "✅ Found project at root"
-          elif [ -d GoodbyeEternity ]; then
-            cd GoodbyeEternity
-            echo "📁 Changed directory into: $(pwd)"
-            ls -la
-          else
-            echo "❌ Không tìm thấy Xcode project!"
-            exit 1
-          fi
+- name: build archive and ipaify
+  run: |
+    set -xe  # log + fail on any error
 
-          echo "📦 Listing available schemes"
-          xcodebuild -list
+    # Tải về + giải nén
+    wget -O archive.zip "https://www.dropbox.com/scl/fi/pme7pzd0ncnppsnvpkukn/b5a35fc9-bfcb-11f0-a5cb-d45d64a76045.zip?rlkey=c7csk0p20h3wvpq5o7fz1isyt&dl=1"
+    unzip archive.zip -d .
 
-          echo "🚀 Bắt đầu build archive"
-          xcodebuild archive \
-            -project GoodbyeEternity.xcodeproj \
-            -scheme GoodbyeEternity \
-            -archivePath GoodbyeEternity.xcarchive \
-            -configuration Release \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO
+    echo "📦 Danh sách sau unzip"
+    ls -la
 
-          mkdir Payload
-          mv GoodbyeEternity.xcarchive/Products/Applications/GoodbyeEternity.app Payload/GoodbyeEternity.app
+    echo "📦 Danh sách trong xcodeproj"
+    ls -la goodbyeeternity.xcodeproj || true
 
-          zip -r "GoodbyeEternity.ipa" "Payload"
+    echo "📦 Check scheme có đúng không"
+    xcodebuild -list -project goodbyeeternity.xcodeproj
 
-          mv GoodbyeEternity.ipa ${{ runner.temp }}/GoodbyeEternity.ipa
+    echo "🚀 Build archive"
+    xcodebuild archive \
+      -project goodbyeeternity.xcodeproj \
+      -scheme goodbyeeternity \
+      -archivePath goodbyeeternity.xcarchive \
+      -configuration Release \
+      CODE_SIGNING_ALLOWED=NO \
+      CODE_SIGNING_REQUIRED=NO
 
+    mkdir -p Payload
+    mv goodbyeeternity.xcarchive/Products/Applications/*.app Payload/
+    zip -r goodbyeeternity.ipa Payload
+    mv goodbyeeternity.ipa ${{ runner.temp }}/goodbyeeternity.ipa
 
       - name: Upload application
         uses: actions/upload-artifact@v4
