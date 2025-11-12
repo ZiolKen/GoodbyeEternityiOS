@@ -1,35 +1,33 @@
-name: "Build iOS app"
+name: Build iOS app
 
-# on: [push]
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
 
 jobs:
   build_ios:
     runs-on: macos-latest
+
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: build archive and ipaify
+      - name: Download and unzip Godot iOS template
         run: |
-          wget -O archive.zip "https://dl.dropboxusercontent.com/scl/fi/qg4ofedro2xsr0wtyz6sd/ios.zip?rlkey=avw6jlbtcztrenumz9wb2nwd9&dl=1"
-          unzip archive.zip -d .
+          wget -O ios_template.zip "https://dl.dropboxusercontent.com/scl/fi/qg4ofedro2xsr0wtyz6sd/ios.zip?rlkey=avw6jlbtcztrenumz9wb2nwd9&dl=1"
+          unzip ios_template.zip -d godot_ios
 
-          xcodebuild archive -project godot_ios.xcodeproj -scheme 'godot_ios' -archivePath godot_ios.xcarchive -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
-
+      - name: Build archive and ipa from godot_ios
+        run: |
+          cd godot_ios
+          xcodebuild archive -project godot_ios.xcodeproj -scheme 'godot_ios' -archivePath godot_ios.xcarchive -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          mv Example-Project.xcarchive/Products/Applications/godot_ios.app Payload/godot_ios.app
-
-          zip -r "godot_ios.ipa" "Payload"
-
+          mv godot_ios.xcarchive/Products/Applications/godot_ios.app Payload/godot_ios.app
+          zip -r "godot_ios.ipa" Payload
           mv godot_ios.ipa ${{ runner.temp }}/godot_ios.ipa
 
-
-      - name: Upload application
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: godot_ios
           path: ${{ runner.temp }}/godot_ios.ipa
-          # you can also archive the entire directory
-          # path: ${{ runner.temp }}/build
           retention-days: 3
