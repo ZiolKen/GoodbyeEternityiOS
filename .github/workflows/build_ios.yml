@@ -53,7 +53,7 @@ jobs:
       run: |
         mkdir -p build/ios
         godot/Godot.app/Contents/MacOS/Godot --headless --path . \
-          --export-release "${IOS_PRESET}" build/ios/${NAME}.xcodeproj
+          --export-project-only "iOS" build/ios/${NAME}.xcodeproj
 
     # 4. Build unsigned archive (mirrors mak448a/build-ios)
     - name: xcodebuild archive (unsigned)
