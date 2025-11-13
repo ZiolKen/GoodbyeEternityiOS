@@ -17,26 +17,26 @@ jobs:
           wget -O archive.zip "https://www.dropbox.com/scl/fi/b10aj1m6nuuvxcpyfncen/b5a35fc9-bfcb-11f0-a5cb-d45d64a76045.zip?rlkey=80uukcql6la033ohy0q0n9j32&st=jtzs3lw5&dl=1"
           unzip -o archive.zip -d .
 
-          xcodebuild -list -project goodbyeeternity.xcodeproj
+          xcodebuild -list -project Goodbye Eternity.xcodeproj
 
           xcodebuild archive \
-            -project goodbyeeternity.xcodeproj \
-            -scheme goodbyeeternity \
-            -archivePath goodbyeeternity.xcarchive \
+            -project Goodbye Eternity.xcodeproj \
+            -scheme Goodbye Eternity \
+            -archivePath Goodbye Eternity.xcarchive \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
 
           mkdir Payload
-          mv goodbyeeternity.xcarchive/Products/Applications/*.app Payload/
-          zip -r goodbyeeternity.ipa Payload
-          mv goodbyeeternity.ipa ${{ runner.temp }}/goodbyeeternity.ipa
+          mv Goodbye Eternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r GoodbyeEternity-0.11.0-iOS.ipa Payload
+          mv GoodbyeEternity-0.11.0-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.11.0-iOS.ipa
 
       - name: Upload application
         uses: actions/upload-artifact@v4
         with:
           name: GoodbyeEternity
-          path: ${{ runner.temp }}/GoodbyeEternity.ipa
+          path: ${{ runner.temp }}/GoodbyeEternity-0.11.0-iOS.ipa
           # you can also archive the entire directory
           # path: ${{ runner.temp }}/build
           retention-days: 3
