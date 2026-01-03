@@ -44,7 +44,7 @@ env:
 
 name: "Build iOS Unsigned IPA"
 
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
 
