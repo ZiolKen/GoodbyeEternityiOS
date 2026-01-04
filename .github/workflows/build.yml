@@ -58,17 +58,11 @@ jobs:
 
         uses: actions/checkout@v4
 
-      - name: Select Xcode 14
-      
-        run: |
-      
-          sudo xcode-select -s /Applications/Xcode_14.3.1.app
-      
-          xcodebuild -version
-
       - name: Build archive and ipaify
 
         run: |
+
+          xcodebuild -version
 
           set -xe
 
