@@ -10,11 +10,11 @@ env:
 
   # Name your app here, it must have the same name in your .xcodeproj, .xcarchive, etc. files.
 
-  NAME: Goodbye Eternity # Change this.
+  NAME: Agent170259 # Change this.
 
   # Enter the direct download link for the compressed .xcodeproj, .xcarchive, etc. files (into a .zip file) here.
 
-  LINK: https://www.dropbox.com/scl/fi/2kbtexe8wopu8a6fgzg1n/GE.xcodeproj.zip?rlkey=v05w62n0bnwc7c2llgna6tysa&st=jkkh1mcg&dl=1 # Change this.
+  LINK: https://delafil.se/c991cec57d986424/Agent170259.xcodeproj.zip?pt=ymdHPe2BhxWOvzzDzJzPHaoGFi57wmmdTEVMNloQaYs%3D # Change this.
 
 # That's it, just run this .yml file.
 
@@ -44,7 +44,7 @@ env:
 
 name: "Build iOS Unsigned IPA"
 
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
 
