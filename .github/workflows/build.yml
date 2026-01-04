@@ -84,11 +84,11 @@ jobs:
 
             CODE_SIGNING_REQUIRED=NO
 
-          PATH="${NAME}.xcarchive/Products/Applications"/*.app
+          APP_PATH="${NAME}.xcarchive/Products/Applications"/*.app
 
           mkdir Payload
 
-          mv ${PATH} Payload/
+          mv $APP_PATH Payload/
 
           zip -r "${NAME}-iOS.ipa" Payload
 
