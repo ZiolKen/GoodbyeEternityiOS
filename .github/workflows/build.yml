@@ -50,13 +50,21 @@ jobs:
 
   build_ios:
 
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
 
       - name: Checkout repository
 
         uses: actions/checkout@v4
+
+      - name: Select Xcode 14
+      
+        run: |
+      
+          sudo xcode-select -s /Applications/Xcode_14.3.1.app
+      
+          xcodebuild -version
 
       - name: Build archive and ipaify
 
