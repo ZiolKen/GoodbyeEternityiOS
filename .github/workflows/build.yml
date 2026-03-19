@@ -73,21 +73,35 @@ jobs:
           xcodebuild -list -project "${NAME}.xcodeproj"
 
           xcodebuild build \
+          
             -project "${NAME}.xcodeproj" \
+            
             -scheme "${NAME}" \
+            
             -configuration Release \
+            
             -sdk iphoneos \
+            
             CODE_SIGNING_ALLOWED=NO \
+            
             CODE_SIGNING_REQUIRED=NO \
+            
             CODE_SIGN_IDENTITY="" \
+            
             CODE_SIGN_STYLE=Manual
+
+            ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=YES \
+              
+            LD_RUNPATH_SEARCH_PATHS="@executable_path/Frameworks"
       
           APP_PATH=$(find . -name "*.app" -type d | head -n 1)
       
           mkdir Payload
+          
           cp -r "$APP_PATH" Payload/
       
           zip -r "${NAME}-iOS.ipa" Payload
+          
           mv "${NAME}-iOS.ipa" "${{ runner.temp }}/${NAME}-iOS.ipa"
 
       - name: Upload application
