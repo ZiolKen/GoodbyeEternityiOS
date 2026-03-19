@@ -72,36 +72,22 @@ jobs:
 
           xcodebuild -list -project "${NAME}.xcodeproj"
 
-          xcodebuild archive \
-          
+          xcodebuild build \
             -project "${NAME}.xcodeproj" \
-            
             -scheme "${NAME}" \
-          
-            -archivePath "${NAME}.xcarchive" \
-            
             -configuration Release \
-            
-            CODE_SIGN_STYLE=Manual \
-            
-            CODE_SIGN_IDENTITY="" \
-            
+            -sdk iphoneos \
             CODE_SIGNING_ALLOWED=NO \
-            
             CODE_SIGNING_REQUIRED=NO \
-            
-            PROVISIONING_PROFILE_SPECIFIER="" \
-            
-            DEVELOPMENT_TEAM=""
-
-          APP_PATH="${NAME}.xcarchive/Products/Applications"/*.app
-
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_STYLE=Manual
+      
+          APP_PATH=$(find . -name "*.app" -type d | head -n 1)
+      
           mkdir Payload
-
-          mv $APP_PATH Payload/
-
+          cp -r "$APP_PATH" Payload/
+      
           zip -r "${NAME}-iOS.ipa" Payload
-
           mv "${NAME}-iOS.ipa" "${{ runner.temp }}/${NAME}-iOS.ipa"
 
       - name: Upload application
