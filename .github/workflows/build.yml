@@ -73,18 +73,26 @@ jobs:
           xcodebuild -list -project "${NAME}.xcodeproj"
 
           xcodebuild archive \
-
+          
             -project "${NAME}.xcodeproj" \
-
+            
             -scheme "${NAME}" \
-
+          
             -archivePath "${NAME}.xcarchive" \
-
+            
             -configuration Release \
-
+            
+            CODE_SIGN_STYLE=Manual \
+            
+            CODE_SIGN_IDENTITY="" \
+            
             CODE_SIGNING_ALLOWED=NO \
-
-            CODE_SIGNING_REQUIRED=NO
+            
+            CODE_SIGNING_REQUIRED=NO \
+            
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            
+            DEVELOPMENT_TEAM=""
 
           APP_PATH="${NAME}.xcarchive/Products/Applications"/*.app
 
