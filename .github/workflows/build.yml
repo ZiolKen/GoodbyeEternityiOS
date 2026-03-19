@@ -1,135 +1,35 @@
-# ========== CONFIG ========== #
+name: "Build iOS app"
 
-# You just need to follow the instructions to edit this CONFIG section.
-
-# Dont do anything to this env: word.
-
-env:
-
-  # Everything you need to edit just NAME: and LINK: here to build IPA.
-
-  # Name your app here, it must have the same name in your .xcodeproj, .xcarchive, etc. files.
-
-  NAME: Goodbye Eternity # Change this.
-
-  # Enter the direct download link for the compressed .xcodeproj, .xcarchive, etc. files (into a .zip file) here.
-
-  LINK: https://www.dropbox.com/scl/fi/km99jeonvo9tnqsyxdpjn/GE.zip?rlkey=g1novwmbop6zt5tqytw8ysncn&st=rnec6cdd&dl=1 # Change this.
-
-# That's it, just run this .yml file.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# You don't need to worry about or edit anything below; just follow the instructions for editing the CONFIG section above.
-
-# ========== BUILD ========== #
-
-name: "Build iOS Unsigned IPA"
-
-on: [push]
+# on: [push]
+on: [workflow_dispatch]
 
 jobs:
-
   build_ios:
-
-    runs-on: macos-14
-
+    runs-on: macos-latest
     steps:
-
-      - name: Checkout repository
-
+      - name: checkout repository
         uses: actions/checkout@v4
 
-      - name: Build archive and ipaify
-
+      - name: build archive and ipaify
         run: |
-
-          xcodebuild -version
-
           set -xe
-
-          wget -O archive.zip "${LINK}"
-
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/km99jeonvo9tnqsyxdpjn/GE.zip?rlkey=g1novwmbop6zt5tqytw8ysncn&st=0ou6obhp&dl=1"
           unzip -o archive.zip -d .
-
-          xcodebuild -list -project "${NAME}.xcodeproj"
-
-          sed -i '' 's/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Automatic;/g' "${NAME}.xcodeproj/project.pbxproj"
-          
-          sed -i '' 's/DEVELOPMENT_TEAM = .*;/DEVELOPMENT_TEAM = "";/g' "${NAME}.xcodeproj/project.pbxproj"
-          
-          sed -i '' 's/PROVISIONING_PROFILE_SPECIFIER = .*;/PROVISIONING_PROFILE_SPECIFIER = "";/g' "${NAME}.xcodeproj/project.pbxproj"
-          
-          sed -i '' 's/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = "";/g' "${NAME}.xcodeproj/project.pbxproj"
-
-          xcodebuild build \
-          
-            -project "${NAME}.xcodeproj" \
-            
-            -scheme "${NAME}" \
-            
+          xcodebuild -list -project "Goodbye Eternity.xcodeproj"
+          xcodebuild archive \
+            -project "Goodbye Eternity.xcodeproj" \
+            -scheme "Goodbye Eternity" \
+            -archivePath "Goodbye Eternity.xcarchive" \
             -configuration Release \
-            
-            -sdk iphoneos \
-
-            -allowProvisioningUpdates \
-            
             CODE_SIGNING_ALLOWED=NO \
-            
-            CODE_SIGNING_REQUIRED=NO \
-            
-            CODE_SIGN_IDENTITY="" \
-            
-            CODE_SIGN_STYLE=Automatic \
-            
-            DEVELOPMENT_TEAM="" \
-            
-            PROVISIONING_PROFILE_SPECIFIER="" \
-
-            OTHER_LDFLAGS="-ObjC -lc++ -lswiftCore -lswiftFoundation" \
-
-            ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=YES \
-              
-            LD_RUNPATH_SEARCH_PATHS="@executable_path/Frameworks"
-      
-          APP_PATH=$(find . -name "*.app" -type d | head -n 1)
-      
+            CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          
-          cp -r "$APP_PATH" Payload/
-      
-          zip -r "${NAME}-iOS.ipa" Payload
-          
-          mv "${NAME}-iOS.ipa" "${{ runner.temp }}/${NAME}-iOS.ipa"
-
+          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r GoodbyeEternity-0.13.5-iOS.ipa Payload
+          mv GoodbyeEternity-0.13.5-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
       - name: Upload application
-
         uses: actions/upload-artifact@v4
-
         with:
-
-          name: "${NAME}"
-
-          path: ${{ runner.temp }}/${NAME}-iOS.ipa
-
+          name: "Goodbye Eternity"
+          path: ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
           retention-days: 3
-
-# ========== END ========== #
