@@ -13,7 +13,7 @@ jobs:
       - name: build archive and ipaify
         run: |
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/km99jeonvo9tnqsyxdpjn/GE.zip?rlkey=g1novwmbop6zt5tqytw8ysncn&st=0ou6obhp&dl=1"
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1"
           unzip -o archive.zip -d .
           xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
