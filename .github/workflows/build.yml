@@ -10,11 +10,11 @@ env:
 
   # Name your app here, it must have the same name in your .xcodeproj, .xcarchive, etc. files.
 
-  NAME: "Goodbye Eternity" # Change this.
+  NAME: Goodbye Eternity # Change this.
 
   # Enter the direct download link for the compressed .xcodeproj, .xcarchive, etc. files (into a .zip file) here.
 
-  LINK: https://www.dropbox.com/scl/fi/x16r4yq6o0ul3qm1jytpf/Goodbye-Eternity.xcodeproj.zip?rlkey=nljmb4akjj9e65lmajk5p966x&st=kz44521w&dl=1 # Change this.
+  LINK: https://www.dropbox.com/scl/fi/km99jeonvo9tnqsyxdpjn/GE.zip?rlkey=g1novwmbop6zt5tqytw8ysncn&st=rnec6cdd&dl=1 # Change this.
 
 # That's it, just run this .yml file.
 
