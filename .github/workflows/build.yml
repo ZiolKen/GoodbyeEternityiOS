@@ -73,8 +73,11 @@ jobs:
           xcodebuild -list -project "${NAME}.xcodeproj"
 
           sed -i '' 's/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Automatic;/g' "${NAME}.xcodeproj/project.pbxproj"
+          
           sed -i '' 's/DEVELOPMENT_TEAM = .*;/DEVELOPMENT_TEAM = "";/g' "${NAME}.xcodeproj/project.pbxproj"
+          
           sed -i '' 's/PROVISIONING_PROFILE_SPECIFIER = .*;/PROVISIONING_PROFILE_SPECIFIER = "";/g' "${NAME}.xcodeproj/project.pbxproj"
+          
           sed -i '' 's/CODE_SIGN_IDENTITY = .*;/CODE_SIGN_IDENTITY = "";/g' "${NAME}.xcodeproj/project.pbxproj"
 
           xcodebuild build \
@@ -86,6 +89,8 @@ jobs:
             -configuration Release \
             
             -sdk iphoneos \
+
+            -allowProvisioningUpdates \
             
             CODE_SIGNING_ALLOWED=NO \
             
@@ -98,6 +103,8 @@ jobs:
             DEVELOPMENT_TEAM="" \
             
             PROVISIONING_PROFILE_SPECIFIER="" \
+
+            OTHER_LDFLAGS="-ObjC -lc++ -lswiftCore -lswiftFoundation" \
 
             ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=YES \
               
