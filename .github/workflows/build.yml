@@ -16,6 +16,10 @@ env:
 
   LINK: https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1 # Change this.
 
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
+
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true
+
 # That's it, just run this .yml file.
 
 
@@ -82,15 +86,15 @@ jobs:
 
           unzip -o archive.zip -d .
 
-          xcodebuild -list -project "Goodbye Eternity.xcodeproj"
+          xcodebuild -list -project "${NAME}.xcodeproj"
 
           xcodebuild archive \
 
-            -project "Goodbye Eternity.xcodeproj" \
+            -project "${NAME}.xcodeproj" \
 
-            -scheme "Goodbye Eternity" \
+            -scheme "${NAME}" \
 
-            -archivePath "Goodbye Eternity.xcarchive" \
+            -archivePath "${NAME}.xcarchive" \
 
             -configuration Release \
 
@@ -100,11 +104,11 @@ jobs:
 
           mkdir Payload
 
-          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          mv ${NAME}.xcarchive/Products/Applications/*.app Payload/
 
-          zip -r GoodbyeEternity-0.13.5-iOS.ipa Payload
+          zip -r ${NAME}-iOS.ipa Payload
 
-          mv GoodbyeEternity-0.13.5-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+          mv ${NAME}-iOS.ipa ${{ runner.temp }}/${NAME}-iOS.ipa
 
       - name: Upload Application
 
@@ -116,4 +120,10 @@ jobs:
 
           path: ${{ runner.temp }}/${NAME}-iOS.ipa
 
+          # You can also archive the entire directory.
+
+          # Path: ${{ runner.temp }}/build
+
           retention-days: 3
+
+# ========== END ========== #
