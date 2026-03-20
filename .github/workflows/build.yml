@@ -16,10 +16,6 @@ env:
 
   LINK: https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1 # Change this.
 
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
-
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true
-
 # That's it, just run this .yml file.
 
 
