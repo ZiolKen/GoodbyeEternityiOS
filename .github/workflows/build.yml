@@ -1,127 +1,35 @@
-# ========== CONFIG ========== #
-
-# You just need to follow the instructions to edit this CONFIG section.
-
-# Dont do anything to this env: word.
-
-env:
-
-  # Everything you need to edit just NAME: and LINK: here to build IPA.
-
-  # Name your app here, it must have the same name in your .xcodeproj, .xcarchive, etc. files.
-
-  NAME: Goodbye Eternity # Change this.
-
-  # Enter the direct download link for the compressed .xcodeproj, .xcarchive, etc. files (into a .zip file) here.
-
-  LINK: https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1 # Change this.
-
-# That's it, just run this .yml file.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# You don't need to worry about or edit anything below; just follow the instructions for editing the CONFIG section above.
-
-# ========== BUILD ========== #
-
 name: "Build iOS Unsigned iPA"
 
 on: [push]
 
 jobs:
-
   build_ios:
-
     runs-on: macos-latest
-
     steps:
-
-      - name: Checkout Repository
-
+      - name: checkout repository
         uses: actions/checkout@v4
-
-      - name: Build Archive & iPAify
-
+      - name: build archive and ipaify
         run: |
-
           set -xe
-
-          wget -O archive.zip "${LINK}"
-
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1"
           unzip -o archive.zip -d .
-
-          xcodebuild -list -project "${NAME}.xcodeproj"
-
+          xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
-
-            -project "${NAME}.xcodeproj" \
-
-            -scheme "${NAME}" \
-
-            -archivePath "${NAME}.xcarchive" \
-
+            -project "Goodbye Eternity.xcodeproj" \
+            -scheme "Goodbye Eternity" \
+            -archivePath "Goodbye Eternity.xcarchive" \
             -configuration Release \
-
-            -allowProvisioningUpdates \
-
             CODE_SIGNING_ALLOWED=NO \
-
             CODE_SIGNING_REQUIRED=NO
-
           mkdir Payload
-
-          mv ${NAME}.xcarchive/Products/Applications/*.app Payload/
-
-          zip -r ${NAME}-iOS.ipa Payload
-
-          mv ${NAME}-iOS.ipa ${{ runner.temp }}/${NAME}-iOS.ipa
-
-      - name: Upload Application
-
+          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r GoodbyeEternity-0.13.5-iOS.ipa Payload
+          mv GoodbyeEternity-0.13.5-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+      - name: upload application
         uses: actions/upload-artifact@v4
-
         with:
-
-          name: "${NAME}"
-
-          path: ${{ runner.temp }}/${NAME}-iOS.ipa
-
-          # You can also archive the entire directory.
-
+          name: "Goodbye Eternity"
+          path: ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+          # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
-
           retention-days: 3
-
-# ========== END ========== #
