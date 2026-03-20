@@ -1,35 +1,119 @@
-name: "Build iOS app"
+# ========== CONFIG ========== #
 
-# on: [push]
-on: [workflow_dispatch]
+# You just need to follow the instructions to edit this CONFIG section.
+
+# Dont do anything to this env: word.
+
+env:
+
+  # Everything you need to edit just NAME: and LINK: here to build IPA.
+
+  # Name your app here, it must have the same name in your .xcodeproj, .xcarchive, etc. files.
+
+  NAME: Goodbye Eternity # Change this.
+
+  # Enter the direct download link for the compressed .xcodeproj, .xcarchive, etc. files (into a .zip file) here.
+
+  LINK: https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1 # Change this.
+
+# That's it, just run this .yml file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# You don't need to worry about or edit anything below; just follow the instructions for editing the CONFIG section above.
+
+# ========== BUILD ========== #
+
+name: "Build iOS Unsigned iPA"
+
+on: [push]
 
 jobs:
+
   build_ios:
+
     runs-on: macos-latest
+
     steps:
-      - name: checkout repository
+
+      - name: Checkout Repository
+
         uses: actions/checkout@v4
 
-      - name: build archive and ipaify
+      - name: Build Archive & iPAify
+
         run: |
+
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/b70ynvpu7nr7zk3ajy0xw/GEX.zip?rlkey=sc2p2aalbvmdu0pbumkaxybw1&st=0w7ltcuw&dl=1"
+
+          wget -O archive.zip "${LINK}"
+
           unzip -o archive.zip -d .
+
           xcodebuild -list -project "Goodbye Eternity.xcodeproj"
+
           xcodebuild archive \
+
             -project "Goodbye Eternity.xcodeproj" \
+
             -scheme "Goodbye Eternity" \
+
             -archivePath "Goodbye Eternity.xcarchive" \
+
             -configuration Release \
+
             CODE_SIGNING_ALLOWED=NO \
+
             CODE_SIGNING_REQUIRED=NO
+
           mkdir Payload
+
           mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+
           zip -r GoodbyeEternity-0.13.5-iOS.ipa Payload
+
           mv GoodbyeEternity-0.13.5-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
-      - name: Upload application
+
+      - name: Upload Application
+
         uses: actions/upload-artifact@v4
+
         with:
-          name: "Goodbye Eternity"
-          path: ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+
+          name: "${NAME}"
+
+          path: ${{ runner.temp }}/${NAME}-iOS.ipa
+
           retention-days: 3
