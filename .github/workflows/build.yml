@@ -94,6 +94,8 @@ jobs:
 
             -configuration Release \
 
+            -allowProvisioningUpdates \
+
             CODE_SIGNING_ALLOWED=NO \
 
             CODE_SIGNING_REQUIRED=NO
