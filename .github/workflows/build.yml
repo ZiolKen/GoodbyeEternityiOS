@@ -18,7 +18,8 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/6uv1m7xww5ea4h5uxis4v/GEX.zip?rlkey=9lzq3l1ngo0i8zjmwkvg1geom&st=ig4q1a77&dl=1"
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/6uv1m7xww5ea4h5uxis4v/GEX.zip?rlkey=9lzq3l1ngo0i8zjmwkvg1geom&st=ig4q1a77&dl=1" 
+      # https://www.dropbox.com/scl/fi/7w422v34fwnqzom5i5rbt/GEXC.zip?rlkey=d4uyt7hr9yx33evi9yv2excj9&st=f7nwn3jj&dl=0
           unzip -o archive.zip -d .
           xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
