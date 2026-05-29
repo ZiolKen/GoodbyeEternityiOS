@@ -18,7 +18,7 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/vtn5fessy1ej2vrq1cmxo/GEX.zip?rlkey=f81scyl4kvt6wyhnbuv5lz9wc&st=sobk7ixf&dl=1"
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/ibfse99voumprxg9c71yc/GE-iOS.zip?rlkey=gw9n63o482nj9fvu7cuh5aup7&st=5eur6qi5&dl=1"
           unzip -o archive.zip -d .
           xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
@@ -30,13 +30,13 @@ jobs:
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
           mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
-          zip -r GoodbyeEternity-0.13.5-iOS.ipa Payload
-          mv GoodbyeEternity-0.13.5-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+          zip -r GoodbyeEternity-0.13.6a-iOS.ipa Payload
+          mv GoodbyeEternity-0.13.6a-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-0.13.6a-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
           name: "Goodbye Eternity"
-          path: ${{ runner.temp }}/GoodbyeEternity-0.13.5-iOS.ipa
+          path: ${{ runner.temp }}/GoodbyeEternity-0.13.6a-iOS.ipa
           # You can also archive the entire directory
-          # Path: ${{ runner.temp }}/build
+          path: ${{ runner.temp }}/build
           retention-days: 3
