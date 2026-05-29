@@ -38,5 +38,5 @@ jobs:
           name: "Goodbye Eternity"
           path: ${{ runner.temp }}/GoodbyeEternity-0.13.6a-iOS.ipa
           # You can also archive the entire directory
-          path: ${{ runner.temp }}/build
+          Path: ${{ runner.temp }}/build
           retention-days: 3
