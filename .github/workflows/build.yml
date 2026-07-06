@@ -29,13 +29,13 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          mv Train45.zip.xcarchive/Products/Applications/*.app Payload/
           zip -r Train45-v1.02-iOS.ipa Payload
           mv Train45-v1.02-iOS.ipa ${{ runner.temp }}/Train45-v1.02-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
-          name: "Goodbye Eternity"
+          name: "Train45.zip"
           path: ${{ runner.temp }}/Train45-v1.02-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
