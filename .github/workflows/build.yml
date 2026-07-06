@@ -18,7 +18,7 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/ywagngshumip9q894cv9t/ios.zip?rlkey=8m1d0o8kwp9onqjpn9ffz18gv&st=qbegvgfz&dl=1"
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/ikrsp1e2nwx80t6jiojn1/Tr45.zip?rlkey=dqp6cpb0ub82gd3zfbrprl1i8&st=hh12yme7&dl=1"
           unzip -o archive.zip -d .
           xcodebuild -list -project "Train45.xcodeproj"
           xcodebuild archive \
