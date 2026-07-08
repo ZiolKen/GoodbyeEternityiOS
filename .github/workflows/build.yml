@@ -30,13 +30,13 @@ jobs:
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
           mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
-          zip -r Goodbye Eternity-v0.14.0-iOS.ipa Payload
-          mv Goodbye Eternity-v0.14.0-iOS.ipa ${{ runner.temp }}/Goodbye Eternity-v0.14.0-iOS.ipa
+          zip -r GoodbyeEternity-v0.14.0-iOS.ipa Payload
+          mv GoodbyeEternity-v0.14.0-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-v0.14.0-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
           name: "Goodbye Eternity"
-          path: ${{ runner.temp }}/Goodbye Eternity-v0.14.0-iOS.ipa
+          path: ${{ runner.temp }}/GoodbyeEternity-v0.14.0-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
           retention-days: 3
