@@ -20,23 +20,23 @@ jobs:
           set -xe
           wget -O archive.zip "https://www.dropbox.com/scl/fi/p5n04dcgrknqs2l9sysqx/GE.zip?rlkey=km20ojf394n8xat4gp19m5iqs&st=izvysbx4&dl=1"
           unzip -o archive.zip -d .
-          xcodebuild -list -project "Train45.xcodeproj"
+          xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
-            -project "Train45.xcodeproj" \
-            -scheme "Train45" \
-            -archivePath "Train45.xcarchive" \
+            -project "Goodbye Eternity.xcodeproj" \
+            -scheme "Goodbye Eternity" \
+            -archivePath "Goodbye Eternity.xcarchive" \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          mv Train45.xcarchive/Products/Applications/*.app Payload/
-          zip -r Train45-v1.02-iOS.ipa Payload
-          mv Train45-v1.02-iOS.ipa ${{ runner.temp }}/Train45-v1.02-iOS.ipa
+          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r Goodbye Eternity-v0.14.0-iOS.ipa Payload
+          mv Goodbye Eternity-v0.14.0-iOS.ipa ${{ runner.temp }}/Goodbye Eternity-v0.14.0-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
-          name: "Train45"
-          path: ${{ runner.temp }}/Train45-v1.02-iOS.ipa
+          name: "Goodbye Eternity"
+          path: ${{ runner.temp }}/Goodbye Eternity-v0.14.0-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
           retention-days: 3
