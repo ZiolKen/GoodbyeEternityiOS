@@ -18,25 +18,25 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://www.dropbox.com/scl/fi/k2j8o8qlk5adoei6c4rto/Train45.zip?rlkey=6ompdv537gz3t20ewciadfua5&st=dff2tozv&dl=1"
+          wget -O archive.zip "https://www.dropbox.com/scl/fi/oqeuzzbgi0j38bbuehw5m/GE.zip?rlkey=3uzbkubjkn24x2api2yie8wvq&st=bsyh0aoj&dl=1"
           unzip -o archive.zip -d .
-          xcodebuild -list -project "Train45.xcodeproj"
+          xcodebuild -list -project "Goodbye Eternity.xcodeproj"
           xcodebuild archive \
-            -project "Train45.xcodeproj" \
-            -scheme "Train45" \
-            -archivePath "Train45.xcarchive" \
+            -project "Goodbye Eternity.xcodeproj" \
+            -scheme "Goodbye Eternity" \
+            -archivePath "Goodbye Eternity.xcarchive" \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          mv Train45.xcarchive/Products/Applications/*.app Payload/
-          zip -r Train45-v1.0.4.3-iOS.ipa Payload
-          mv Train45-v1.0.4.3-iOS.ipa ${{ runner.temp }}/Train45-v1.0.4.3-iOS.ipa
+          mv Goodbye\ Eternity.xcarchive/Products/Applications/*.app Payload/
+          zip -r GoodbyeEternity-v0.14.1-iOS.ipa Payload
+          mv GoodbyeEternity-v0.14.1-iOS.ipa ${{ runner.temp }}/GoodbyeEternity-v0.14.1-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
-          name: "Train45"
-          path: ${{ runner.temp }}/Train45-v1.0.4.3-iOS.ipa
+          name: "GoodbyeEternity"
+          path: ${{ runner.temp }}/GoodbyeEternity-v0.14.1-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
           retention-days: 3
