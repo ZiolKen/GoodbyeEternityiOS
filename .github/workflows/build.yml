@@ -18,7 +18,7 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://pixeldrain.com/api/file/VXXY7Zoa?download"
+          wget -O archive.zip "https://pixeldrain.com/api/file/viDkXTFV?download"
           unzip -o archive.zip -d .
           xcodebuild -list -project "Mii Chan.xcodeproj"
           xcodebuild archive \
@@ -35,7 +35,7 @@ jobs:
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
-          name: "GoodbyeEternity"
+          name: "MiiChan"
           path: ${{ runner.temp }}/MiiChan-v1.0.3-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
