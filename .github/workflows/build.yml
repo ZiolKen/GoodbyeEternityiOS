@@ -18,25 +18,25 @@ jobs:
           echo $ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION
           node -v
           set -xe
-          wget -O archive.zip "https://pixeldrain.com/api/file/viDkXTFV?download"
+          wget -O archive.zip "https://pixeldrain.com/api/file/GbRU5DyT?download"
           unzip -o archive.zip -d .
-          xcodebuild -list -project "Mii Chan.xcodeproj"
+          xcodebuild -list -project "バイト先の後輩と同棲生活.xcodeproj"
           xcodebuild archive \
-            -project "Mii Chan.xcodeproj" \
-            -scheme "Mii Chan" \
-            -archivePath "Mii Chan.xcarchive" \
+            -project "バイト先の後輩と同棲生活.xcodeproj" \
+            -scheme "バイト先の後輩と同棲生活" \
+            -archivePath "バイト先の後輩と同棲生活.xcarchive" \
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO
           mkdir Payload
-          mv Mii\ Chan.xcarchive/Products/Applications/*.app Payload/
-          zip -r MiiChan-v1.0.3-iOS.ipa Payload
-          mv MiiChan-v1.0.3-iOS.ipa ${{ runner.temp }}/MiiChan-v1.0.3-iOS.ipa
+          mv \バイト先の後輩と同棲生活.xcarchive/Products/Applications/*.app Payload/
+          zip -r バイト先の後輩と同棲生活-v1.0-iOS.ipa Payload
+          mv バイト先の後輩と同棲生活-v1.0-iOS.ipa ${{ runner.temp }}/バイト先の後輩と同棲生活-v1.0-iOS.ipa
       - name: upload application
         uses: actions/upload-artifact@v4
         with:
-          name: "MiiChan"
-          path: ${{ runner.temp }}/MiiChan-v1.0.3-iOS.ipa
+          name: "バイト先の後輩と同棲生活"
+          path: ${{ runner.temp }}/バイト先の後輩と同棲生活-v1.0-iOS.ipa
           # You can also archive the entire directory
           # Path: ${{ runner.temp }}/build
           retention-days: 3
